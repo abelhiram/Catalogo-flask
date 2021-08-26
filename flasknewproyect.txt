@@ -1,0 +1,40 @@
+//flask sqlalchemy pipenv comandos
+
+pipenv shell
+pipenv install flask
+pipenv install Flask-SQLAlchemy
+
+//ejecutar proyecto   
+python app.py
+
+1//comandos sqlite3
+//ingresar consola sqlite3 de la base de datos
+sqlite3 database/catalogo.db 
+
+//crear la base de datos
+sqlite3 database/tasks.db
+
+/terminar de crear y consultar la base de datos 
+.databases
+
+//consultar tablas
+.tables
+
+//salir de la consola sqlite3
+.exit
+
+2//importar archivo database del archivo .py principal
+//abrir la consola de python:   
+python
+//ejecutar el siguiente comando para insertar la tabla en la base de datos
+from app import db
+
+//crear todos los campos del los modelos 
+db.create_all()
+
+//salir consola python 
+exit()
+
+//consulta de datos
+select * from task
+

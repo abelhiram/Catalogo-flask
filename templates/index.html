@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Catálogo</title>
+    <!-- BOOTSTRAP 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<style>
+    .zoom:hover {
+  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+</style>
+</head>
+
+<body>
+    
+    <main class="container p-4">
+
+        <div class="row">
+
+            <div class="col-md-12 offset-md-12 my-auto">
+
+                <div class="card">
+                    <div class="card-header">
+
+                        <form action="/create-task" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="content" placeholder="Descripción" class="form-control" autofocus>
+                                <input type="text" name="foto" placeholder="Url" class="form-control" autofocus>
+                                
+                                <select id="categoria" name="categoria" class="form-control">
+                                    <option value="comida" selected>comida</option>
+                                    <option value="paisajes">paisajes</option>
+                                    <option value="arte">arte</option>
+                                    <option value="otros">otros</option>
+                                  </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Añadir al catalogo</button>
+                        </form>
+                    </div>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#comida" role="tab" aria-controls="comida" aria-selected="true">comida</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#paisajes" role="tab" aria-controls="paisajes" aria-selected="false">paisajes</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#arte" role="tab" aria-controls="arte" aria-selected="false">arte</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#otros" role="tab" aria-controls="otros" aria-selected="false">otros</a>
+                          </li>
+                      </ul>
+                      <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="comida" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="card-columns">
+                                
+                                {% for task in tasks %}
+                                {% if task.categoria == "comida" %}
+                                <div class="card">
+                                    <img src="{{task.foto}}" class="zoom" style="width: 100%;height: 500%;" alt="">
+                                    <div class="card-body">
+                                    <span class="{% if task.done %} done {% endif %}">{{task.content}}</span> <br>
+                                        <span class="{% if task.done %} done {% endif %}">{{task.categoria}}</span><br>
+                                        <a href="/done/{{task.id}}" class="btn btn-success btn-sm">{% if task.done %} descartar {% else %}añadir{% endif %}</a>
+                                        <a href="{{url_for('delete', id=task.id)}}" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                </div>
+                        </div>
+                        <div class="tab-pane fade" id="paisajes" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="card-columns">
+                                {% for task in tasks %}
+                                {% if task.categoria == "paisajes" %}
+                                <div class="card" >
+                                    <img src="{{task.foto}}" class="zoom" style="width: 100%;height: 500%;" alt="">
+                                    <div class="card-body">
+                                    <span class="{% if task.done %} done {% endif %}">{{task.content}}</span> <br>
+                                        <span class="{% if task.done %} done {% endif %}">{{task.categoria}}</span><br>
+                                        <a href="/done/{{task.id}}" class="btn btn-success btn-sm">{% if task.done %} descartar {% else %}añadir{% endif %}</a>
+                                        <a href="{{url_for('delete', id=task.id)}}" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                </div>
+                        </div>
+                        <div class="tab-pane fade" id="arte" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="card-columns">
+                                {% for task in tasks %}
+                                {% if task.categoria == "arte" %}
+                                <div class="card">
+                                    <img src="{{task.foto}}" class="zoom" style="width: 100%;height: 500%;" alt="">
+                                    <div class="card-body">
+                                    <span class="{% if task.done %} done {% endif %}">{{task.content}}</span> <br>
+                                        <span class="{% if task.done %} done {% endif %}">{{task.categoria}}</span><br>
+                                        <a href="/done/{{task.id}}" class="btn btn-success btn-sm">{% if task.done %} descartar {% else %}añadir{% endif %}</a>
+                                        <a href="{{url_for('delete', id=task.id)}}" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                </div>
+                        </div>
+                        <div class="tab-pane fade" id="otros" role="tabpanel" aria-labelledby="contact-tab">
+                            <div class="card-columns">
+                                {% for task in tasks %}
+                                {% if task.categoria == "otros" %}
+                                <div class="card">
+                                    <img src="{{task.foto}}" class="zoom" style="width: 100%;height: 500%;" alt="">
+                                    <div class="card-body">
+                                    <span class="{% if task.done %} done {% endif %}">{{task.content}}</span> <br>
+                                        <span class="{% if task.done %} done {% endif %}">{{task.categoria}}</span><br>
+                                        <a href="/done/{{task.id}}" class="btn btn-success btn-sm">{% if task.done %} descartar {% else %}añadir{% endif %}</a>
+                                        <a href="{{url_for('delete', id=task.id)}}" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                </div>
+                        </div>
+                      </div>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
